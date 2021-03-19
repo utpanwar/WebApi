@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Controllers.Models;
+using Models;
 
 namespace Services
 {
@@ -13,19 +14,25 @@ namespace Services
             new Character{ Id = 1, Name = "Thuma"}
 
         };
-        public async Task<List<Character>> AddCharacter(Character newCharacter)
+        public async Task<ServiceResponse<List<Character>>> AddCharacter(Character newCharacter)
         {
+             ServiceResponse<List<Character>> serviceRes = new ServiceResponse<List<Character>>();
              characters.Add(newCharacter);
-             return characters;
+             serviceRes.Data = characters;
+             return serviceRes;
             // return 
         }
-        public async Task<Character> GetCharacterById(int id)
+        public async Task<ServiceResponse<Character>> GetCharacterById(int id)
         {
-            return characters.FirstOrDefault(c => c.Id == id);
+            ServiceResponse<Character> serviceRes = new ServiceResponse<Character>();
+            serviceRes.Data = characters.FirstOrDefault(c => c.Id == id);
+            return serviceRes;
         }
-        public async Task<List<Character>> GetAllCharacters()
+        public async Task<ServiceResponse<List<Character>>> GetAllCharacters()
         {
-            return characters;
+            ServiceResponse<List<Character>> serviceRes = new ServiceResponse<List<Character>>();
+            serviceRes.Data = characters;
+            return serviceRes;
         }
     }
 }
