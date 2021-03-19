@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Controllers.Models;
 using Microsoft.AspNetCore.Mvc;
+using Services;
+
 namespace Controllers
 {
     [ApiController]
@@ -9,28 +12,30 @@ namespace Controllers
     public class CharacterController : ControllerBase
     {
         // private static Character Knight = new Character();
-        private static List<Character> characters = new List<Character>
+        private readonly ICharaterService  _character ;
+        public CharacterController(ICharaterService character)
         {
-            new Character(),
-            new Character{ Id = 1, Name = "Thuma"}
-
-        };
+            _character = character;
+        }
+        
         [HttpGet]
         [Route("GetAll")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(characters);
+            return Ok(await _character.GetAllCharacters());
         }
 
-        // [HttpPost]
-        // public IActionResult GetSingle()
-        // {
-        //     return Ok(characters[0]);
-        // }
         [HttpGet("{id}")]
-        public IActionResult GetSingle(int id)
+        public async Task<IActionResult> GetSingle(int id)
         {
-            return Ok(characters.FirstOrDefault(c => c.Id == id));
+             return Ok(await _character.GetCharacterById(id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddCharacter(Character newCharacter)
+        {
+        //    characters.Add(newCharacter);
+            return Ok(await _character.AddCharacter(newCharacter));
         }
     }
 }
