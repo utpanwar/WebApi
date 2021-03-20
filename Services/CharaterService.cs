@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Controllers.Models;
+using Data;
 using Dtos.Character;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace Services
@@ -12,8 +14,10 @@ namespace Services
     public class CharaterService : ICharaterService
     {
         private readonly IMapper _mapper;
-        public CharaterService(IMapper mapper)
+        private readonly DataContext _context;
+        public CharaterService(IMapper mapper, DataContext context)
         {
+            _context = context;
             _mapper = mapper;
 
         }
@@ -31,7 +35,7 @@ namespace Services
         //     return serviceRes;
         // }
         // now generation by ourself
-         public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter)
+        public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter)
         {
             ServiceResponse<List<GetCharacterDto>> serviceRes = new ServiceResponse<List<GetCharacterDto>>();
             Character character = _mapper.Map<Character>(newCharacter);
@@ -49,9 +53,10 @@ namespace Services
         public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters()
         {
             ServiceResponse<List<GetCharacterDto>> serviceRes = new ServiceResponse<List<GetCharacterDto>>();
-            // serviceRes.Data = _mapper.Map<List<GetCharacterDto>>(characters);
+            List<Character> dbCharacters = await _context.Character.ToListAsync();
+            serviceRes.Data = _mapper.Map<List<GetCharacterDto>>(dbCharacters);
             // this is also ways of doing the same above
-            serviceRes.Data = (characters.Select(c => _mapper.Map<GetCharacterDto>(c))).ToList();
+            // serviceRes.Data = (characters.Select(c => _mapper.Map<GetCharacterDto>(c))).ToList();
             return serviceRes;
         }
 
@@ -68,10 +73,10 @@ namespace Services
                 // characters.Add(character);
                 serviceRes.Data = _mapper.Map<GetCharacterDto>(character);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 serviceRes.message = ex.Message;
-                serviceRes.Success =false;  
+                serviceRes.Success = false;
             }
             return serviceRes;
         }
@@ -79,12 +84,13 @@ namespace Services
         public async Task<ServiceResponse<List<GetCharacterDto>>> Delete(int id)
         {
             ServiceResponse<List<GetCharacterDto>> serviceRes = new ServiceResponse<List<GetCharacterDto>>();
-            try {
+            try
+            {
                 Character character = characters.Find(c => c.Id == id);
                 characters.Remove(character);
                 serviceRes.Data = _mapper.Map<List<GetCharacterDto>>(characters);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 // serviceRes.Data = null;
                 serviceRes.message = ex.Message;
