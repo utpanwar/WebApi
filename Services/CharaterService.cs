@@ -22,10 +22,20 @@ namespace Services
             new Character{ Id = 1, Name = "Thuma"}
 
         };
-        public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter)
+        // public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter)
+        // {
+        //     ServiceResponse<List<GetCharacterDto>> serviceRes = new ServiceResponse<List<GetCharacterDto>>();
+        //     characters.Add(_mapper.Map<Character>(newCharacter));
+        //     serviceRes.Data = _mapper.Map<List<GetCharacterDto>>(characters);
+        //     return serviceRes;
+        // }
+        // now generation by ourself
+         public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newCharacter)
         {
             ServiceResponse<List<GetCharacterDto>> serviceRes = new ServiceResponse<List<GetCharacterDto>>();
-            characters.Add(_mapper.Map<Character>(newCharacter));
+            Character character = _mapper.Map<Character>(newCharacter);
+            character.Id = characters.Max(c => c.Id) + 1;
+            characters.Add(character);
             serviceRes.Data = _mapper.Map<List<GetCharacterDto>>(characters);
             return serviceRes;
         }
