@@ -2,9 +2,9 @@ using Controllers.Models;
 
 namespace Dtos.Character
 {
-    public class GetCharacterDto
+    public class UpdateCharacterDto
     {
-        public int Id { get; set; }
+         public int Id { get; set; }
         public string Name { get; set; } = "Robin";    
         public int HitPoints { get; set; } = 100;
         public int Strength { get; set; } = 10;

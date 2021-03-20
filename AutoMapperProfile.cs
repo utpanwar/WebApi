@@ -10,6 +10,7 @@ namespace API
         {
             CreateMap<Character,GetCharacterDto>();
             CreateMap<AddCharacterDto,Character>();
+            // CreateMap<Character,UpdateCharacterDto>();
         }
     }
 }

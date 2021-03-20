@@ -38,5 +38,12 @@ namespace Controllers
         //    characters.Add(newCharacter);
             return Ok(await _character.AddCharacter(newCharacter));
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateCharacter(UpdateCharacterDto updateCharacter)
+        {
+        //    characters.Add(newCharacter);
+            return Ok(await _character.UpdateCharacter(updateCharacter));
+        }
     }
 }

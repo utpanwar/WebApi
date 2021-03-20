@@ -53,5 +53,18 @@ namespace Services
             serviceRes.Data = (characters.Select(c => _mapper.Map<GetCharacterDto>(c))).ToList();
             return serviceRes;
         }
+
+        public async Task<ServiceResponse<GetCharacterDto>> UpdateCharacter(UpdateCharacterDto updateCharacter)
+        {
+            ServiceResponse<GetCharacterDto> serviceRes = new ServiceResponse<GetCharacterDto>();
+            Character character = characters.FirstOrDefault(c => updateCharacter.Id == c.Id);
+            character.Name = updateCharacter.Name;
+            character.Class = updateCharacter.Class;
+            character.Defencse = updateCharacter.Defencse;
+            character.HitPoints = updateCharacter.HitPoints;
+            // characters.Add(character);
+            serviceRes.Data = _mapper.Map<GetCharacterDto>(character);
+            return serviceRes;
+        }
     }
 }
