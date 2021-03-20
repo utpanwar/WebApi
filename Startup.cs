@@ -28,6 +28,7 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
             services.AddScoped<ICharaterService,CharaterService>();
             services.AddSwaggerGen(c =>
