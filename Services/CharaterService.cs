@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -57,13 +58,21 @@ namespace Services
         public async Task<ServiceResponse<GetCharacterDto>> UpdateCharacter(UpdateCharacterDto updateCharacter)
         {
             ServiceResponse<GetCharacterDto> serviceRes = new ServiceResponse<GetCharacterDto>();
-            Character character = characters.FirstOrDefault(c => updateCharacter.Id == c.Id);
-            character.Name = updateCharacter.Name;
-            character.Class = updateCharacter.Class;
-            character.Defencse = updateCharacter.Defencse;
-            character.HitPoints = updateCharacter.HitPoints;
-            // characters.Add(character);
-            serviceRes.Data = _mapper.Map<GetCharacterDto>(character);
+            try
+            {
+                Character character = characters.FirstOrDefault(c => updateCharacter.Id == c.Id);
+                character.Name = updateCharacter.Name;
+                character.Class = updateCharacter.Class;
+                character.Defencse = updateCharacter.Defencse;
+                character.HitPoints = updateCharacter.HitPoints;
+                // characters.Add(character);
+                serviceRes.Data = _mapper.Map<GetCharacterDto>(character);
+            }
+            catch(Exception ex)
+            {
+                serviceRes.message = ex.Message;
+                serviceRes.Success =false;  
+            }
             return serviceRes;
         }
     }

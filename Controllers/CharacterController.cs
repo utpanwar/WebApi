@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Controllers.Models;
 using Dtos.Character;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 using Services;
 
 namespace Controllers
@@ -43,7 +44,9 @@ namespace Controllers
         public async Task<IActionResult> UpdateCharacter(UpdateCharacterDto updateCharacter)
         {
         //    characters.Add(newCharacter);
-            return Ok(await _character.UpdateCharacter(updateCharacter));
+            ServiceResponse<GetCharacterDto> res = await _character.UpdateCharacter(updateCharacter);
+            if(null == res.Data) return NotFound(res);
+            return Ok(res);
         }
     }
 }
