@@ -40,14 +40,16 @@ namespace Services
             ServiceResponse<List<GetCharacterDto>> serviceRes = new ServiceResponse<List<GetCharacterDto>>();
             Character character = _mapper.Map<Character>(newCharacter);
             character.Id = characters.Max(c => c.Id) + 1;
-            characters.Add(character);
+            // characters.Add(character); // it is list in its class now save in SqlServer
+            // var a = await _context.Character.Add(character).ToListAsync();
             serviceRes.Data = _mapper.Map<List<GetCharacterDto>>(characters);
             return serviceRes;
         }
         public async Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id)
         {
             ServiceResponse<GetCharacterDto> serviceRes = new ServiceResponse<GetCharacterDto>();
-            serviceRes.Data = _mapper.Map<GetCharacterDto>(characters.FirstOrDefault(c => c.Id == id));
+            Character DbCharacter = await _context.Character.FirstOrDefaultAsync(c => c.Id == id);
+            serviceRes.Data = _mapper.Map<GetCharacterDto>(DbCharacter);
             return serviceRes;
         }
         public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters()
