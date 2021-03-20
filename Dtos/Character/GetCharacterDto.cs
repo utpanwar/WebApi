@@ -1,3 +1,5 @@
+using Controllers.Models;
+
 namespace Dtos.Character
 {
     public class GetCharacterDto
