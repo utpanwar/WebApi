@@ -24,13 +24,17 @@ namespace Controllers
         [Route("GetAll")]
         public async Task<IActionResult> Get()
         {
-            return Ok(await _character.GetAllCharacters());
+            ServiceResponse<List<GetCharacterDto>> res = await _character.GetAllCharacters();
+            if(null == res.Data) return NotFound(res);
+            return Ok(res);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSingle(int id)
         {
-             return Ok(await _character.GetCharacterById(id));
+            ServiceResponse<GetCharacterDto> res = await _character.GetCharacterById(id);
+            if(null == res.Data) return NotFound(res);
+            return Ok(res);
         }
 
         [HttpPost]
