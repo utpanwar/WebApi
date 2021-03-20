@@ -75,5 +75,22 @@ namespace Services
             }
             return serviceRes;
         }
+
+        public async Task<ServiceResponse<List<GetCharacterDto>>> Delete(int id)
+        {
+            ServiceResponse<List<GetCharacterDto>> serviceRes = new ServiceResponse<List<GetCharacterDto>>();
+            try {
+                Character character = characters.Find(c => c.Id == id);
+                characters.Remove(character);
+                serviceRes.Data = _mapper.Map<List<GetCharacterDto>>(characters);
+            }
+            catch(Exception ex)
+            {
+                // serviceRes.Data = null;
+                serviceRes.message = ex.Message;
+                serviceRes.Success = false;
+            }
+            return serviceRes;
+        }
     }
 }

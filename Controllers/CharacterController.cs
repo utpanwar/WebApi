@@ -48,5 +48,16 @@ namespace Controllers
             if(null == res.Data) return NotFound(res);
             return Ok(res);
         }
+
+        
+        [Route("Delete")] // this will not works becausse we are having params in httdelete
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCharacter(int id)
+        {
+        //    characters.Add(newCharacter);
+            ServiceResponse<List<GetCharacterDto>> res = await _character.Delete(id);
+            if(null == res.Data) return NotFound(res);
+            return Ok(res);
+        }
     }
 }
