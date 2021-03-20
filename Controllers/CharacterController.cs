@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Controllers.Models;
+using Dtos.Character;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -32,7 +33,7 @@ namespace Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCharacter(Character newCharacter)
+        public async Task<IActionResult> AddCharacter(AddCharacterDto newCharacter)
         {
         //    characters.Add(newCharacter);
             return Ok(await _character.AddCharacter(newCharacter));
