@@ -38,7 +38,9 @@ namespace Services
         public async Task<ServiceResponse<List<GetCharacterDto>>> GetAllCharacters()
         {
             ServiceResponse<List<GetCharacterDto>> serviceRes = new ServiceResponse<List<GetCharacterDto>>();
-            serviceRes.Data = _mapper.Map<List<GetCharacterDto>>(characters);
+            // serviceRes.Data = _mapper.Map<List<GetCharacterDto>>(characters);
+            // this is also ways of doing the same above
+            serviceRes.Data = (characters.Select(c => _mapper.Map<GetCharacterDto>(c))).ToList();
             return serviceRes;
         }
     }

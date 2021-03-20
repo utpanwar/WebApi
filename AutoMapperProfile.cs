@@ -9,7 +9,7 @@ namespace API
         public AutoMapperProfile()
         {
             CreateMap<Character,GetCharacterDto>();
-            // CreateMap<Character,AddCharacterDto>();
+            CreateMap<AddCharacterDto,Character>();
         }
     }
 }
