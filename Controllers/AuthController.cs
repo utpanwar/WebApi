@@ -28,5 +28,17 @@ namespace Controllers
                 }
                 return Ok(res);
         }
+
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> LoginUser(UserLoginDto user)
+        {
+            ServiceResponse<string> res = await _auth.Login(user.Username , user.Password);
+            if(!res.Success)
+            {
+                return BadRequest(res);
+            }
+            return Ok(res);
+        }
     }
 }

@@ -12,9 +12,28 @@ namespace Data
             _context = context;
 
         }
-        public Task<ServiceResponse<int>> Login(string user, string password)
+        public async Task<ServiceResponse<string>> Login(string username, string password)
         {
-            throw new System.NotImplementedException();
+            ServiceResponse<string> res = new ServiceResponse<string>();
+            User user = await _context.Users.FirstOrDefaultAsync(x => x.Username.ToLower().Equals(username.ToLower()));
+            if(null == user)
+            {
+                res.message = "Usename does not exits!";
+                res.Success = false;
+                return res;
+            }
+            else if(!VerifyLoginpassword(password, user.PasswordHash , user.PasswordSalt))
+            {
+                    res.message = "wrong password";
+                    res.Success = false;
+            }
+            else
+            {
+                res.Data = user.Username;
+                res.message = "Login Successfully";
+                res.Success = true;
+            }
+            return res;
         }
 
         public async Task<ServiceResponse<int>> Register(User user, string password)
@@ -52,6 +71,22 @@ namespace Data
                 passSalt = hmac.Key;
                 passHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             } 
+        }
+
+        private bool VerifyLoginpassword(string password, byte[] passHash, byte[] passSalt)
+        {
+            using(var hmac = new System.Security.Cryptography.HMACSHA512(passSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for(int i =0; i<passHash.Length; i++)
+                {
+                    if(computedHash[i]!=passHash[i])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
     }
 }
