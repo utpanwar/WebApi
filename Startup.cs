@@ -33,6 +33,7 @@ namespace API
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
             services.AddScoped<ICharaterService,CharaterService>();
+            services.AddScoped<IAuthRepository,AuthRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
