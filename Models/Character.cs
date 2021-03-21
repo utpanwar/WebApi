@@ -1,3 +1,5 @@
+using Models;
+
 namespace Controllers.Models
 {
     public class Character
@@ -9,7 +11,7 @@ namespace Controllers.Models
         public int Defencse { get; set; } = 12;
         public int Intelligence { get; set; } = 11;
         public RpgClass Class { get; set; } = RpgClass.Knight;
-
+        public User User { get; set; }
 
     }
 }
