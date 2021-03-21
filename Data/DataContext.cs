@@ -1,5 +1,6 @@
 using Controllers.Models;
 using Microsoft.EntityFrameworkCore;
+using Models;
 
 namespace Data
 {
@@ -7,5 +8,6 @@ namespace Data
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) {}
         public DbSet<Character> Character { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
