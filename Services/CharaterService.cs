@@ -39,10 +39,11 @@ namespace Services
         {
             ServiceResponse<List<GetCharacterDto>> serviceRes = new ServiceResponse<List<GetCharacterDto>>();
             Character character = _mapper.Map<Character>(newCharacter);
-            character.Id = characters.Max(c => c.Id) + 1;
+            // character.Id = characters.Max(c => c.Id) + 1;
             // characters.Add(character); // it is list in its class now save in SqlServer
-            // var a = await _context.Character.Add(character).ToListAsync();
-            serviceRes.Data = _mapper.Map<List<GetCharacterDto>>(characters);
+             await _context.Character.AddAsync(character);
+             await _context.SaveChangesAsync();
+            serviceRes.Data = _mapper.Map<List<GetCharacterDto>>(await _context.Character.ToListAsync());
             return serviceRes;
         }
         public async Task<ServiceResponse<GetCharacterDto>> GetCharacterById(int id)
