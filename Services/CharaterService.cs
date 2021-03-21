@@ -91,10 +91,10 @@ namespace Services
             ServiceResponse<List<GetCharacterDto>> serviceRes = new ServiceResponse<List<GetCharacterDto>>();
             try
             {
-                Character character = await _context.Character.FirstOrDefaultAsync(c => c.Id == id);
+                Character character = await _context.Character.FirstAsync(c => c.Id == id);
                 _context.Character.Remove(character);
                 await _context.SaveChangesAsync();
-                serviceRes.Data = _mapper.Map<List<GetCharacterDto>>(characters);
+                serviceRes.Data = _mapper.Map<List<GetCharacterDto>>(await _context.Character.ToListAsync());
             }
             catch (Exception ex)
             {
