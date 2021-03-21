@@ -68,12 +68,14 @@ namespace Services
             ServiceResponse<GetCharacterDto> serviceRes = new ServiceResponse<GetCharacterDto>();
             try
             {
-                Character character = characters.FirstOrDefault(c => updateCharacter.Id == c.Id);
+                Character character = await _context.Character.FirstOrDefaultAsync(c => updateCharacter.Id == c.Id);
                 character.Name = updateCharacter.Name;
                 character.Class = updateCharacter.Class;
                 character.Defencse = updateCharacter.Defencse;
                 character.HitPoints = updateCharacter.HitPoints;
                 // characters.Add(character);
+                _context.Character.Update(character);
+                await _context.SaveChangesAsync();
                 serviceRes.Data = _mapper.Map<GetCharacterDto>(character);
             }
             catch (Exception ex)
@@ -89,8 +91,9 @@ namespace Services
             ServiceResponse<List<GetCharacterDto>> serviceRes = new ServiceResponse<List<GetCharacterDto>>();
             try
             {
-                Character character = characters.Find(c => c.Id == id);
-                characters.Remove(character);
+                Character character = await _context.Character.FirstOrDefaultAsync(c => c.Id == id);
+                _context.Character.Remove(character);
+                await _context.SaveChangesAsync();
                 serviceRes.Data = _mapper.Map<List<GetCharacterDto>>(characters);
             }
             catch (Exception ex)

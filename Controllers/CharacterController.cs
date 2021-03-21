@@ -54,7 +54,7 @@ namespace Controllers
         }
 
         
-        [Route("Delete")] // this will not works becausse we are having params in httdelete
+        // [Route("Delete")] // this will not works becausse we are having params in httdelete
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCharacter(int id)
         {
