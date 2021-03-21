@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace Data
@@ -18,16 +19,30 @@ namespace Data
 
         public async Task<ServiceResponse<int>> Register(User user, string password)
         {
+            ServiceResponse<int> res = new ServiceResponse<int>();
+            if(await UserExits(user.Username))
+            {
+                res.message = "user alredy exits";
+                res.Success = false;
+                return res;
+            }
+            
             CreatePasswordHash(password, out byte[] passHash, out byte[] passSalt);
             user.PasswordHash = passHash;
             user.PasswordSalt = passSalt;
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
+            res.Data = user.Id;
+            return res;
         }
 
-        public Task<bool> UserExits(string username)
+        public async Task<bool> UserExits(string username)
         {
-            throw new System.NotImplementedException();
+            if(await _context.Users.AnyAsync(x => x.Username.ToLower() == username.ToLower()))
+            {
+                return true;
+            }
+            return false;
         }
 
         private void CreatePasswordHash(string password, out byte[] passHash , out byte[] passSalt)
@@ -36,7 +51,7 @@ namespace Data
             {
                 passSalt = hmac.Key;
                 passHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
+            } 
         }
     }
 }
