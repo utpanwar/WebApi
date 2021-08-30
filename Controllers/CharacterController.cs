@@ -20,10 +20,11 @@ namespace Controllers
             _character = character;
         }
         
-        [HttpGet]
-        [Route("GetAll")]
+        [HttpGet("GetAll")]
+        // [Route("GetAll")]
         public async Task<IActionResult> Get()
         {
+            
             ServiceResponse<List<GetCharacterDto>> res = await _character.GetAllCharacters();
             if(null == res.Data) return NotFound(res);
             return Ok(res);
