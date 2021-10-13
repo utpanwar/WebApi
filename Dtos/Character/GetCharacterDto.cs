@@ -1,8 +1,8 @@
-using Models;
+using Controllers.Models;
 
-namespace Controllers.Models
+namespace Dtos.Character
 {
-    public class Character
+    public class GetCharacterDto
     {
         public int Id { get; set; }
         public string Name { get; set; } = "Robin";    
@@ -11,7 +11,5 @@ namespace Controllers.Models
         public int Defencse { get; set; } = 12;
         public int Intelligence { get; set; } = 11;
         public RpgClass Class { get; set; } = RpgClass.Knight;
-        public User User { get; set; }
-
     }
 }

@@ -1,17 +1,15 @@
-using Models;
+using Controllers.Models;
 
-namespace Controllers.Models
+namespace Dtos.Character
 {
-    public class Character
+    public class AddCharacterDto
     {
-        public int Id { get; set; }
+        // public int Id { get; set; }
         public string Name { get; set; } = "Robin";    
         public int HitPoints { get; set; } = 100;
         public int Strength { get; set; } = 10;
         public int Defencse { get; set; } = 12;
         public int Intelligence { get; set; } = 11;
         public RpgClass Class { get; set; } = RpgClass.Knight;
-        public User User { get; set; }
-
     }
 }
